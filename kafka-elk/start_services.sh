@@ -27,6 +27,6 @@ sleep 30
 
 # Start Cassandra nodes last
 echo "Starting Cassandra nodes..."
-docker-compose up -d cassandra-dc1 cassandra-dc2
+docker-compose up -d cassandra-dc1 cassandra-dc1-node2 cassandra-dc2 cassandra-dc2-node2
 
 echo "All services started!"
