@@ -1,4 +1,142 @@
 services:
+  zookeeper:
+    container_name: zookeeper-cntr
+    image: confluentinc/cp-zookeeper:7.2.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - kafka_elk_nw
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "echo",
+          "ruok",
+          "|",
+          "nc",
+          "-w",
+          "5",
+          "localhost",
+          "2181"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  kafka:
+    container_name: kafka-cntr
+    image: confluentinc/cp-kafka:7.2.0
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-cntr:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-cntr:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_SESSION_TIMEOUT_MS: 60000
+      KAFKA_CONNECTION_TIMEOUT_MS: 60000
+      KAFKA_REQUEST_TIMEOUT_MS: 120000
+    networks:
+      - kafka_elk_nw
+    healthcheck:
+      test: [ "CMD", "nc", "-vz", "kafka-cntr", "9092" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  elasticsearch:
+    container_name: elasticsearch-cntr
+    image: elasticsearch:7.9.1
+    environment:
+      - cluster.name=kafka-cluster
+      - bootstrap.memory_lock=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data:rw
+    ports:
+      - 9200:9200
+      - 9300:9300
+    depends_on:
+      - kafka
+    networks:
+      - kafka_elk_nw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -u elastic:elastic -s -f http://elasticsearch-cntr:9200/_cat/health || exit 1"
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  logstash:
+    container_name: logstash-cntr
+    image: logstash:7.9.1
+    volumes:
+      - ./logstash-kafka.conf:/usr/share/logstash/pipeline/logstash-kafka.conf
+    ports:
+      - 5044:5044
+    depends_on:
+      - elasticsearch
+    networks:
+      - kafka_elk_nw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--silent",
+          "--fail",
+          "http://logstash-cntr:9600"
+        ]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+
+  kibana:
+    container_name: kibana-cntr
+    image: kibana:7.9.1
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - kafka_elk_nw
+    links: [ 'elasticsearch' ]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl --fail http://kibana-cntr:5601 || exit 1"
+        ]
+      interval: 30s
+      retries: 3
+      timeout: 10s
+
   cassandra-dc1:
     container_name: cassandra-dc1
     image: cassandra:4.0
