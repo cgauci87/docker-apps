@@ -25,8 +25,8 @@ echo "Starting Kibana..."
 docker-compose up -d kibana
 sleep 30
 
-# Start Cassandra nodes last
-echo "Starting Cassandra nodes..."
-docker-compose up -d cassandra-dc1 cassandra-dc1-node2 cassandra-dc2 cassandra-dc2-node2
+# Start Cassandra node last
+echo "Starting Cassandra node..."
+docker-compose up -d cassandra
 
 echo "All services started!"
