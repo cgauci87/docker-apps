@@ -142,49 +142,51 @@ services:
       retries: 3
       timeout: 10s
 
-  cassandra-dc1:
-    container_name: cassandra-dc1
-    image: cassandra:4.0
-    environment:
-      CASSANDRA_CLUSTER_NAME: "SRE_Cluster"
-      CASSANDRA_NUM_TOKENS: "256"
-      CASSANDRA_DC: "dc1"
-      CASSANDRA_RACK: "rack1"
-      CASSANDRA_ENDPOINT_SNITCH: "GossipingPropertyFileSnitch"
-    ports:
-      - 9042:9042
-    volumes:
-      - cassandra_data_dc1:/var/lib/cassandra
-    networks:
-      - kafka_elk_nw
-    restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "nodetool status || exit 1" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+cassandra-dc1:
+  container_name: cassandra-dc1
+  image: cassandra:4.0
+  environment:
+    CASSANDRA_CLUSTER_NAME: "SRE_Cluster"
+    CASSANDRA_NUM_TOKENS: "256"
+    CASSANDRA_DC: "dc1"
+    CASSANDRA_RACK: "rack1"
+    CASSANDRA_ENDPOINT_SNITCH: "GossipingPropertyFileSnitch"
+    CASSANDRA_SEEDS: "cassandra-dc1,cassandra-dc2"
+  ports:
+    - 9042:9042
+  volumes:
+    - cassandra_data_dc1:/var/lib/cassandra
+  networks:
+    - kafka_elk_nw
+  restart: always
+  healthcheck:
+    test: [ "CMD-SHELL", "nodetool status || exit 1" ]
+    interval: 30s
+    timeout: 10s
+    retries: 5
 
-  cassandra-dc2:
-    container_name: cassandra-dc2
-    image: cassandra:4.0
-    environment:
-      CASSANDRA_CLUSTER_NAME: "SRE_Cluster"
-      CASSANDRA_NUM_TOKENS: "256"
-      CASSANDRA_DC: "dc2"
-      CASSANDRA_RACK: "rack1"
-      CASSANDRA_ENDPOINT_SNITCH: "GossipingPropertyFileSnitch"
-    ports:
-      - 9043:9042
-    volumes:
-      - cassandra_data_dc2:/var/lib/cassandra
-    networks:
-      - kafka_elk_nw
-    restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "nodetool status || exit 1" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+cassandra-dc2:
+  container_name: cassandra-dc2
+  image: cassandra:4.0
+  environment:
+    CASSANDRA_CLUSTER_NAME: "SRE_Cluster"
+    CASSANDRA_NUM_TOKENS: "256"
+    CASSANDRA_DC: "dc2"
+    CASSANDRA_RACK: "rack1"
+    CASSANDRA_ENDPOINT_SNITCH: "GossipingPropertyFileSnitch"
+    CASSANDRA_SEEDS: "cassandra-dc1,cassandra-dc2"
+  ports:
+    - 9043:9042
+  volumes:
+    - cassandra_data_dc2:/var/lib/cassandra
+  networks:
+    - kafka_elk_nw
+  restart: always
+  healthcheck:
+    test: [ "CMD-SHELL", "nodetool status || exit 1" ]
+    interval: 30s
+    timeout: 10s
+    retries: 5
 
 networks:
   kafka_elk_nw:
