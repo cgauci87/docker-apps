@@ -7,6 +7,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     networks:
       - kafka_elk_nw
+    restart: always
     healthcheck:
       test:
         [
@@ -44,6 +45,7 @@ services:
       KAFKA_REQUEST_TIMEOUT_MS: 120000
     networks:
       - kafka_elk_nw
+    restart: always
     healthcheck:
       test: [ "CMD", "nc", "-vz", "kafka-cntr", "9092" ]
       interval: 5s
@@ -68,6 +70,7 @@ services:
       - kafka
     networks:
       - kafka_elk_nw
+    restart: always
     logging:
       driver: "json-file"
       options:
@@ -94,6 +97,7 @@ services:
       - elasticsearch
     networks:
       - kafka_elk_nw
+    restart: always
     logging:
       driver: "json-file"
       options:
@@ -122,6 +126,7 @@ services:
     networks:
       - kafka_elk_nw
     links: [ 'elasticsearch' ]
+    restart: always
     logging:
       driver: "json-file"
       options:
@@ -152,6 +157,7 @@ services:
       - cassandra_data_dc1:/var/lib/cassandra
     networks:
       - kafka_elk_nw
+    restart: always
     healthcheck:
       test: [ "CMD-SHELL", "nodetool status || exit 1" ]
       interval: 30s
@@ -173,6 +179,7 @@ services:
       - cassandra_data_dc2:/var/lib/cassandra
     networks:
       - kafka_elk_nw
+    restart: always
     healthcheck:
       test: [ "CMD-SHELL", "nodetool status || exit 1" ]
       interval: 30s
