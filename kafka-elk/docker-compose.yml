@@ -142,7 +142,7 @@ services:
       retries: 3
       timeout: 10s
 
-  cassandra:
+cassandra:
     container_name: cassandra-cntr
     image: cassandra:4.0
     environment:
