@@ -1,22 +1,32 @@
-cluster_name: 'SRE_Cluster'
+cluster_name: "SRE_Cluster"
 num_tokens: 256
+
+# Directories for data, commit logs, and caches
 data_file_directories:
-    - /var/lib/cassandra/data
+  - /var/lib/cassandra/data
 commitlog_directory: /var/lib/cassandra/commitlog
 saved_caches_directory: /var/lib/cassandra/saved_caches
 
+# Seed provider configuration
 seed_provider:
-    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
-      parameters:
-          - seeds: "172.18.0.7"
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+      - seeds: "172.18.0.7"
 
-endpoint_snitch: GossipingPropertyFileSnitch
-auto_bootstrap: false
+# Network settings
+listen_address: 172.18.0.7
+rpc_address: 172.18.0.7
 
-# Enable materialized views
-enable_materialized_views: true
-
-# Add these to avoid configuration issues
+# Partitioner for data distribution
 partitioner: org.apache.cassandra.dht.Murmur3Partitioner
+
+# Commit log sync settings
 commitlog_sync: periodic
 commitlog_sync_period_in_ms: 10000
+
+# Snitch to define network topology
+endpoint_snitch: GossipingPropertyFileSnitch
+
+# Other settings
+auto_bootstrap: false
+enable_materialized_views: true
