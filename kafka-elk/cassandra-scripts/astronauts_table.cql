@@ -34,7 +34,7 @@ PRIMARY KEY (group,name))
 WITH CLUSTERING ORDER BY (name asc);
 
 COPY packt.astronauts (name, year, group, status, dob, birthplace, gender, alma_mater, spaceflights, spaceflight_hours, spacewalks, spacewalk_hours, missions)
-FROM '/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
+FROM 'C:/Users/cgauci/docker-apps/kafka-elk/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
 
 COPY packt.astronauts_by_group (name, year, group, status, dob, birthplace, gender, alma_mater, spaceflights, spaceflight_hours, spacewalks, spacewalk_hours, missions)
-FROM '/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
+FROM 'C:/Users/cgauci/docker-apps/kafka-elk/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
