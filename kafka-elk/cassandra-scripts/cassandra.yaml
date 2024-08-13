@@ -15,7 +15,7 @@ seed_provider:
 endpoint_snitch: GossipingPropertyFileSnitch
 auto_bootstrap: false
 
-# Enable materialized views
+# Enable materialized views ..
 enable_materialized_views: true
 
 # Required directive
