@@ -13,7 +13,7 @@ seed_provider:
     parameters:
       - seeds: "172.18.0.7"
 
-# Network settings - INSPECT
+# Network settings - INSPECT..
 listen_address: 172.18.0.7
 rpc_address: 172.18.0.7
 
