@@ -170,7 +170,6 @@ services:
       timeout: 10s
       retries: 5
 
-
 networks:
   kafka_elk_nw:
     driver: bridge
