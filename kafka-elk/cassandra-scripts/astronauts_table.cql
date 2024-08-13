@@ -13,8 +13,7 @@ spaceflights int,
 spaceflight_hours int,
 spacewalks int,
 spacewalk_hours int,
-missions text,.
-
+missions text
 PRIMARY KEY (name));
 
 CREATE TABLE IF NOT EXISTS packt.astronauts_by_group (
@@ -35,9 +34,7 @@ PRIMARY KEY (group,name))
 WITH CLUSTERING ORDER BY (name asc);
 
 COPY packt.astronauts (name, year, group, status, dob, birthplace, gender, alma_mater, spaceflights, spaceflight_hours, spacewalks, spacewalk_hours, missions)
-FROM 'kafka-elk/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
+FROM '/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
 
 COPY packt.astronauts_by_group (name, year, group, status, dob, birthplace, gender, alma_mater, spaceflights, spaceflight_hours, spacewalks, spacewalk_hours, missions)
-FROM 'kafka-elk/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
-
-
+FROM '/cassandra-scripts/astronauts.csv' WITH HEADER = TRUE;
