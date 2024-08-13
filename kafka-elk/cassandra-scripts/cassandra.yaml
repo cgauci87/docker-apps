@@ -1,16 +1,16 @@
-cluster_name: 'SRE_Cluster'
+cluster_name: "SRE_Cluster"
 num_tokens: 256
 
 data_file_directories:
-    - /var/lib/cassandra/data
+  - /var/lib/cassandra/data
 
 commitlog_directory: /var/lib/cassandra/commitlog
 saved_caches_directory: /var/lib/cassandra/saved_caches
 
 seed_provider:
-    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
-      parameters:
-          - seeds: "cassandra-cntr"
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+      - seeds: "cassandra-cntr"
 
 endpoint_snitch: GossipingPropertyFileSnitch
 auto_bootstrap: false
