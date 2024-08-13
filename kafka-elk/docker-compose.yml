@@ -158,6 +158,7 @@ services:
     volumes:
       - cassandra_data:/var/lib/cassandra
       - ./cassandra-scripts:/cassandra-scripts
+      - ./cassandra-scripts/cassandra.yaml:/etc/cassandra/cassandra.yaml # Mounting custom cassandra.yaml
     networks:
       - kafka_elk_nw
     restart: always
