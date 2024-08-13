@@ -151,16 +151,16 @@ services:
       CASSANDRA_DC: "dc1"
       CASSANDRA_RACK: "rack1"
       CASSANDRA_ENDPOINT_SNITCH: "GossipingPropertyFileSnitch"
-      CASSANDRA_LISTEN_ADDRESS: "0.0.0.0"
-      CASSANDRA_RPC_ADDRESS: "0.0.0.0"
-      CASSANDRA_BROADCAST_ADDRESS: "172.18.0.7" # This should match the IP returned from docker inspect
+      CASSANDRA_LISTEN_ADDRESS: "172.18.0.7"
+      CASSANDRA_RPC_ADDRESS: "172.18.0.7"
+      CASSANDRA_BROADCAST_ADDRESS: "172.18.0.7"
       CASSANDRA_BROADCAST_RPC_ADDRESS: "172.18.0.7"
     ports:
       - 9042:9042
     volumes:
       - cassandra_data:/var/lib/cassandra
       - ./cassandra-scripts:/cassandra-scripts
-      - ./cassandra-scripts/cassandra.yaml:/etc/cassandra/cassandra.yaml # Mounting custom cassandra.yaml
+      - ./cassandra-scripts/cassandra.yaml:/etc/cassandra/cassandra.yaml
     networks:
       - kafka_elk_nw
     restart: always
@@ -169,6 +169,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
 
 networks:
   kafka_elk_nw:
