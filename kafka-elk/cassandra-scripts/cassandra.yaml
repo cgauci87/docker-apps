@@ -1,16 +1,26 @@
+<<<<<<< HEAD
 cluster_name: SRE_Cluster
+=======
+cluster_name: "SRE_Cluster"
+>>>>>>> b4c311ae51451ca30ae94e3d17ae4bbde5f28700
 num_tokens: 256
 
 data_file_directories:
-    - /var/lib/cassandra/data
+  - /var/lib/cassandra/data
 
 commitlog_directory: /var/lib/cassandra/commitlog
 saved_caches_directory: /var/lib/cassandra/saved_caches
 
 seed_provider:
+<<<<<<< HEAD
     - class_name: org.apache.cassandra.locator.SimpleSeedProvider
       parameters:
           - seeds: "172.18.0.7"
+=======
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+      - seeds: "cassandra-cntr"
+>>>>>>> b4c311ae51451ca30ae94e3d17ae4bbde5f28700
 
 endpoint_snitch: GossipingPropertyFileSnitch
 auto_bootstrap: false
