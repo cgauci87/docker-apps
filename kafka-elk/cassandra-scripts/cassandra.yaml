@@ -1,7 +1,9 @@
 cluster_name: 'SRE_Cluster'
 num_tokens: 256
+
 data_file_directories:
     - /var/lib/cassandra/data
+
 commitlog_directory: /var/lib/cassandra/commitlog
 saved_caches_directory: /var/lib/cassandra/saved_caches
 
@@ -15,3 +17,7 @@ auto_bootstrap: false
 
 # Enable materialized views
 enable_materialized_views: true
+
+# Required directive
+commitlog_sync: periodic
+commitlog_sync_period_in_ms: 10000
