@@ -1,4 +1,4 @@
-cluster_name: "SRE_Cluster"
+cluster_name: SRE_Cluster
 num_tokens: 256
 
 # Directories for data, commit logs, and caches
@@ -13,9 +13,15 @@ seed_provider:
     parameters:
       - seeds: "172.18.0.7"
 
+<<<<<<< Updated upstream
 # Network settings - INSPECT....
 listen_address: 172.18.0.7
 rpc_address: 172.18.0.7
+=======
+# Network settings
+listen_address: 0.0.0.0
+rpc_address: 0.0.0.0
+>>>>>>> Stashed changes
 
 # Partitioner for data distribution
 partitioner: org.apache.cassandra.dht.Murmur3Partitioner
