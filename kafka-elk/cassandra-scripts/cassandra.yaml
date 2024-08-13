@@ -8,7 +8,7 @@ saved_caches_directory: /var/lib/cassandra/saved_caches
 seed_provider:
     - class_name: org.apache.cassandra.locator.SimpleSeedProvider
       parameters:
-          - seeds: "cassandra-cntr"
+          - seeds: "172.18.0.7"
 
 endpoint_snitch: GossipingPropertyFileSnitch
 auto_bootstrap: false
